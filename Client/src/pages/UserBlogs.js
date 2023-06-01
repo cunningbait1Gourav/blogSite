@@ -5,6 +5,7 @@ import classes from "../css/UserBlogs.module.css";
 import Loading from "../components/Loading";
 const UserBlogs = () => {
   const [blogs, setBlogs] = useState([]);
+  const [user,setUser] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   //get user blogs
   const getUserBlogs = async () => {
@@ -14,6 +15,7 @@ const UserBlogs = () => {
       const { data } = await axios.get(`/api/v1/blog/user-blog/${id}`);
       if (data?.success) {
         setBlogs(data?.userBlog.blogs);
+        setUser(data?.userBlog);
         setIsLoading(false);
       }
     } catch (error) {
@@ -23,6 +25,7 @@ const UserBlogs = () => {
   useEffect(() => {
     getUserBlogs();
   }, []);
+  console.log(blogs)
   return (
     <>
       {isLoading && <Loading />}
@@ -37,7 +40,7 @@ const UserBlogs = () => {
                 title={blog.title}
                 description={blog.description}
                 image={blog.image}
-                username={blog.user.username}
+                username={user.username}
                 time={blog.createdAt}
               />
             ))
